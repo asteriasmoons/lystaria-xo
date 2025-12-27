@@ -1,4 +1,4 @@
-# Lystaria
+# Lystaria XO
 
 Lystaria is a custom Obsidian theme created specifically for my blogging vault.
 
