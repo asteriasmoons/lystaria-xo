@@ -127,6 +127,34 @@ settings:
 
 .theme-light,
 .theme-dark {
+    /* =============================
+   GLASS EFFECT VARIABLES
+   ============================ */
+/* Glass backgrounds - semi-transparent with blur */
+--glass-bg: rgba(34, 39, 53, 0.7);           /* 70% opacity base */
+--glass-bg-light: rgba(37, 43, 58, 0.6);     /* Lighter glass */
+--glass-bg-heavy: rgba(34, 39, 53, 0.85);    /* Less transparent */
+--glass-bg-subtle: rgba(34, 39, 53, 0.4);    /* Very transparent */
+
+/* Glass borders - subtle glow */
+--glass-border: rgba(125, 147, 255, 0.15);   /* Blue tint */
+--glass-border-bright: rgba(125, 147, 255, 0.3);
+--glass-border-gradient: linear-gradient(135deg, 
+    rgba(254, 93, 219, 0.2), 
+    rgba(125, 147, 255, 0.2), 
+    rgba(62, 229, 255, 0.2)
+);
+
+/* Glass shadows */
+--glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+--glass-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.6);
+--glass-shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+/* Backdrop blur amounts */
+--glass-blur: blur(12px);
+--glass-blur-heavy: blur(20px);
+--glass-blur-subtle: blur(8px);
+
   /* Gradient helpers */
   --brand-grad-main: linear-gradient(135deg, #fe5ddb, #7d93ff, #3ee5ff, #f5ffc9);
   --brand-grad-alt: linear-gradient(135deg, #fe5ddb, #7d93ff, #3ee5ff, #f5ffc9);
@@ -561,6 +589,7 @@ input[type="checkbox"].task-list-item-checkbox {
   margin-right: 0.5em;
   border-radius: 50%; /* CIRCLE! */
   border: 2px solid #3ee5ff; /* Blue border for unchecked */
+  line-height: 1.5;
   background: transparent;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -683,7 +712,7 @@ input[type="checkbox"].task-list-item-checkbox:checked::after {
   color: var(--tag-color);
   padding: 0.2em 0.6em;
   border-radius: var(--radius-m);
-  font-size: 0.9em;
+  font-size: 1em;
   font-weight: 500;
   transition: background-color 0.2s ease;
 }
@@ -693,43 +722,42 @@ input[type="checkbox"].task-list-item-checkbox:checked::after {
 }
 
 /* ========================================
-   GLASS SURFACES - DISABLED FOR TEXT CONTAINERS
-   ======================================== */
-
-/* Remove backdrop-filter from text areas to prevent artifacts */
-.workspace-leaf-content,
-.markdown-reading-view,
-.markdown-source-view,
-.markdown-preview-view,
-.markdown-rendered,
-.cm-editor,
-.cm-scroller,
-.cm-content,
-.view-content {
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-  background: var(--background-primary) !important;
-}
-
-/* ========================================
    GRADIENT DIVIDERS
    ======================================== */
+   /* Reading mode - tight line height */
 .markdown-preview-view hr,
-.markdown-rendered hr,
+.markdown-rendered hr {
+    border: none !important;
+    border-top: none !important;
+    height: var(--divider-thickness) !important;
+    background: linear-gradient(90deg, 
+        var(--divider-color-1) var(--divider-stop-1), 
+        var(--divider-color-2) var(--divider-stop-2), 
+        var(--divider-color-3) var(--divider-stop-3), 
+        var(--divider-color-4) var(--divider-stop-4)
+    ) !important;
+    margin: 1.5em 1.5em !important;
+    border-radius: 2px;
+    opacity: 1 !important;
+    line-height: 1.7 !important; /* ONLY in reading mode */
+}
+
+/* Source/editing mode - normal spacing */
 .cm-line hr,
 hr {
     border: none !important;
-  border-top: none !important;
-  height: var(--divider-thickness) !important;
-  background: linear-gradient(90deg, 
-    var(--divider-color-1) var(--divider-stop-1), 
-    var(--divider-color-2) var(--divider-stop-2), 
-    var(--divider-color-3) var(--divider-stop-3), 
-    var(--divider-color-4) var(--divider-stop-4)
-  ) !important;
-  margin: 0.5em 0.5em !important;
-  border-radius: 2px;
-  opacity: 1 !important;
+    border-top: none !important;
+    height: var(--divider-thickness) !important;
+    background: linear-gradient(90deg, 
+        var(--divider-color-1) var(--divider-stop-1), 
+        var(--divider-color-2) var(--divider-stop-2), 
+        var(--divider-color-3) var(--divider-stop-3), 
+        var(--divider-color-4) var(--divider-stop-4)
+    ) !important;
+    margin: 0.5em 0.5em !important;
+    border-radius: 2px;
+    opacity: 1 !important;
+    /* NO line-height here */
 }
 
 /* =============================
@@ -741,15 +769,53 @@ hr {
   line-height: 1.7; /* Base line height for everything */
 }
 
+.markdown-preview-view {
+  line-height: 1.6;
+}
+
+.markdown-preview-view > * + * {
+  margin-top: 0.75em;
+}
+
 /* ========================================
    UI ELEMENTS
    ======================================== */
-/* File explorer */
+/* COLORFUL FOLDERS - GRADIENT */
+.nav-folder-title {
+  background: linear-gradient(135deg, #7d93ff, #f5ffc9, #3ee5ff, 
+#fe5ddb);
+  background-size: 30% 90%;
+  /* background-position: 0% 80%; */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Also apply to collapse arrow */
+.nav-folder-title .collapse-icon {
+  background: linear-gradient(135deg, #7d93ff, #f5ffc9, #3ee5ff, 
+#fe5ddb);
+  background-size: 30% 90%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Optional: Make it shimmer on hover */
+.nav-folder-title:hover {
+  background: linear-gradient(135deg, #7d93ff, #f5ffc9, #3ee5ff, 
+#fe5ddb);
+  background-size: 30% 90%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+   /* File explorer */
 .nav-folder-title,
 .nav-file-title {
   border-radius: var(--radius-s);
   padding: 0.3em 0.5em;
-  transition: background-color 0.2s ease;
 }
 
 .nav-folder-title:hover,
@@ -764,10 +830,12 @@ hr {
   border-radius: var(--radius-m);
 }
 
-/* Search */
+/* ===================================
+    SEARCH 
+    =================================== */
 .search-input {
   border-radius: var(--radius-m);
-  border: 1px solid var(--background-modifier-border);
+  border: 1px solid var(--interactive-accent);
   padding: 0.5em 1em;
   transition: border-color 0.2s ease;
 }
@@ -775,36 +843,6 @@ hr {
 .search-input:focus {
   border-color: var(--interactive-accent);
   outline: none;
-}
-
-/* ========================================
-   COLORFUL FOLDERS - GRADIENT
-   ======================================== */
-.nav-folder-title {
-  background: linear-gradient(135deg, #7d93ff, #f5ffc9, #3ee5ff, #fe5ddb);
-  background-size: 30% 90%;
-  /* background-position: 0% 80%; */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Also apply to collapse arrow */
-.nav-folder-title .collapse-icon {
-  background: linear-gradient(135deg, #7d93ff, #f5ffc9, #3ee5ff, #fe5ddb);
-  background-size: 30% 90%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Optional: Make it shimmer on hover */
-.nav-folder-title:hover {
-  background: linear-gradient(135deg, #7d93ff, #f5ffc9, #3ee5ff, #fe5ddb);
-  background-size: 30% 90%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* ========================================
@@ -821,23 +859,28 @@ select {
   border-radius: var(--pill-radius);
 }
 
+/* =============================
+   GLASS BUTTONS
+   ============================ */
 button,
 .setting-item-control button,
 .modal button {
-  padding: var(--pill-padding-y) var(--pill-padding-x);
+  padding: 8px 16px;
   border: 1px solid var(--glass-border);
   background: var(--glass-bg);
   color: var(--text-normal);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  border-radius: 8px;
   transition: transform 0.12s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 button:hover,
 .setting-item-control button:hover,
 .modal button:hover {
-  border-color: rgba(255, 255, 255, 0.18);
+  background: var(--glass-bg-light);
+  border-color: var(--glass-border-bright);
   transform: translateY(-1px);
 }
 
@@ -854,6 +897,28 @@ button.mod-cta:hover,
   filter: brightness(1.06);
 }
 
+/* Active/enabled toggle buttons */
+.checkbox-container.is-enabled,
+button.is-enabled,
+button.mod-cta {
+  background: var(--interactive-accent) !important;
+  border-color: transparent !important;
+  color: #222735 !important; /* Dark text on bright gradient */
+}
+
+/* Toggle switch specifically */
+.checkbox-container.is-enabled::after {
+  background: var(--interactive-accent) !important; /* Dark toggle circle */
+}
+
+/* Hover state for enabled buttons */
+.checkbox-container.is-enabled:hover,
+button.is-enabled:hover,
+button.mod-cta:hover {
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+}
+
 /* Settings */
 .setting-item {
   border-radius: var(--radius-m);
@@ -861,10 +926,6 @@ button.mod-cta:hover,
   margin-bottom: 0.5em;
   transition: background-color 0.2s ease;
 }
-
-/* .setting-item:hover {
-  background-color: var(--interactive-hover);
-} */
 
 /* Graph view */
 .graph-view.color-fill-focused {
